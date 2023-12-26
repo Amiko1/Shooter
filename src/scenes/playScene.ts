@@ -14,7 +14,8 @@ export class GameScene extends Scene {
     
   
     create() {
-        this.add.sprite(200, 200, 'zombie').setScale(0.5)
+       const zo =  this.add.sprite(200, 200, 'zombie')
+
       this.textbox = this.add.text(
         window.innerWidth / 2,
         window.innerHeight / 2,

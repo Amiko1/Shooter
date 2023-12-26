@@ -5,9 +5,10 @@ import { GameScene } from './scenes/playScene';
 
 const config = {
   type: WEBGL,
-  width: 1920,
-  height: 1080,
+  width: 1600,
+  height: 880,
   scale: {
+
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
 },
