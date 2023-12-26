@@ -6,12 +6,22 @@ export class PlayScene extends Scene {
   }
 
   create() {
-    this.createMap();
+    const map = this.createMap();
+    const { wall, floor } = this.createLayer(map);
+
+    console.log(wall, floor);
   }
 
   createMap() {
     const map = this.make.tilemap({ key: "map" });
+    return map;
+  }
+
+  createLayer(map: Phaser.Tilemaps.Tilemap) {
     const tileSet = map.addTilesetImage("dungeon", "dungeon");
-    map.createLayer("platform", tileSet as any);
+    const wall = map.createLayer("wall", tileSet as any);
+    const floor = map.createLayer("floor", tileSet as any);
+
+    return { wall, floor };
   }
 }
