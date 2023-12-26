@@ -1,29 +1,17 @@
-import { Scene, GameObjects } from "phaser";
+import { Scene } from "phaser";
 
-export class GameScene extends Scene {
-  private textbox: GameObjects.Text | undefined;
-
+export class PlayScene extends Scene {
   constructor() {
-    super("scene-game");
-  }
-
-  preload() {
-    this.load.tilemapTiledJSON("map", "./game.json");
-    this.load.image("dungeon", "./dungeon.png");
+    super("PlayScene");
   }
 
   create() {
-    const map = this.make.tilemap({ key: "map" });
-    const tileSet = map.addTilesetImage("dungeon", "dungeon");
-
-    map.createLayer("platform", tileSet as any);
+    this.createMap();
   }
 
-  update(time: number, delta: number) {
-    if (!this.textbox) {
-      return;
-    }
-
-    this.textbox.rotation += 0.0005 * delta;
+  createMap() {
+    const map = this.make.tilemap({ key: "map" });
+    const tileSet = map.addTilesetImage("dungeon", "dungeon");
+    map.createLayer("platform", tileSet as any);
   }
 }

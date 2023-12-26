@@ -2,7 +2,8 @@ import "./style.css";
 import Phaser from "phaser";
 import { Game, WEBGL } from "phaser";
 const canvas = document.getElementById("game") as HTMLCanvasElement;
-import { GameScene } from "./scenes/playScene";
+import { PlayScene } from "./scenes/PlayScene";
+import { PreloadScene } from "./scenes/PreloadScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: WEBGL,
@@ -17,15 +18,9 @@ const config: Phaser.Types.Core.GameConfig = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      // debug: true
+      debug: true,
     },
   },
-  scene: [GameScene],
+  scene: [PreloadScene, PlayScene],
 };
-const game = new Game(config);
-
-// // add resize listener
-// window.addEventListener("resize", () => {
-//   game.scale.resize(window.innerWidth, window.innerHeight);
-
-// });
+new Game(config);
