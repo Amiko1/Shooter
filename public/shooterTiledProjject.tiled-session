@@ -50,6 +50,7 @@
     "openFiles": [
     ],
     "project": "shooterTiledProjject.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "game.json",
         "game.tmx",
