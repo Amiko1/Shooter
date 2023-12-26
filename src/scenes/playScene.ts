@@ -10,12 +10,24 @@ export class GameScene extends Scene {
 
     preload() {
         this.load.image('zombie', '/Dead3.png')
+        this.load.tilemapTiledJSON('map', './map.json');
+        this.load.image('Dungeon_24x24', './P_P_FREE_RPG_TILESET/Dungeon_24x24.png')
     }
     
   
     create() {
-       const zo =  this.add.sprite(200, 200, 'zombie')
+      console.log(this.make, 'dung')
 
+      const map = this.make.tilemap({ key: 'map' });
+      console.log(map, 'dung')
+      
+      const dungeon = map.addTilesetImage('Dungeon_24x24', 'Dungeon_24x24');
+
+      map.createLayer('Platform', dungeon as any)
+      
+      
+       const zo =  this.add.sprite(200, 200, 'zombie')
+      
       this.textbox = this.add.text(
         window.innerWidth / 2,
         window.innerHeight / 2,
