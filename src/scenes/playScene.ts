@@ -32,8 +32,7 @@ export class PlayScene extends Scene {
   }
 
   createPlayer() {
-    const player = new Player(this, 100, 250).setScale(0.2);
-    player.setCollideWorldBounds(true);
+    const player = new Player(this, 100, 250);
 
     return player;
   }
