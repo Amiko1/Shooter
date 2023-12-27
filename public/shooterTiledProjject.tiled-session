@@ -1,5 +1,5 @@
 {
-    "activeFile": "",
+    "activeFile": "game.json",
     "expandedProjectPaths": [
         "."
     ],
@@ -28,15 +28,15 @@
             "scaleInDock": 1
         },
         "game.json": {
-            "scale": 1,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 977,
-                "y": 446
+                "x": 810.6666666666666,
+                "y": 476
             }
         },
         "game.json#dungeon": {
-            "scaleInDock": 2
+            "scaleInDock": 1
         },
         "game.json#world": {
             "scaleInDock": 1.5
@@ -48,6 +48,7 @@
     "map.tileWidth": 24,
     "map.width": 67,
     "openFiles": [
+        "game.json"
     ],
     "project": "shooterTiledProjject.tiled-project",
     "property.type": "bool",

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-
+import { playerConfig } from "../utils/importConfig";
+const { walk } = playerConfig;
 class Player extends Phaser.Physics.Arcade.Sprite {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   playerSpeed!: number;
@@ -20,6 +21,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     this.setCollideWorldBounds(true);
+    this.registerAnimations();
+  }
+
+  registerAnimations() {
+    this.anims.create({
+      key: "walk",
+      frames: walk.getImageNames().map((name) => {
+        return { key: name };
+      }),
+      frameRate: 6,
+      repeat: 1,
+    });
   }
 
   initEvents() {
@@ -37,6 +50,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.setVelocityX(0);
     }
+
+    this.play("walk", true);
   }
 }
 
