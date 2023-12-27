@@ -1,3 +1,4 @@
+import { CollidableType } from "./../../types";
 import { Scene } from "phaser";
 import Player from "../entities/Player";
 
@@ -12,8 +13,11 @@ export class PlayScene extends Scene {
 
     const player = this.createPlayer();
 
-    // @ts-ignore
-    wall && player.addCollider(wall);
+    this.createPlayerColliders(player, {
+      colliders: {
+        wall: wall,
+      },
+    });
   }
 
   createMap() {
@@ -26,7 +30,7 @@ export class PlayScene extends Scene {
     const wall = map.createLayer("wall", tileSet as any);
     const floor = map.createLayer("floor", tileSet as any);
 
-    wall?.setCollisionByExclusion([-1], true);
+    wall.setCollisionByExclusion([-1], true);
 
     return { wall, floor };
   }
@@ -35,5 +39,19 @@ export class PlayScene extends Scene {
     const player = new Player(this, 100, 250);
 
     return player;
+  }
+
+  createPlayerColliders(
+    player: Player,
+    {
+      colliders,
+    }: {
+      colliders: {
+        wall: CollidableType;
+      };
+    }
+  ) {
+    // @ts-ignore
+    player.addCollider(colliders.wall);
   }
 }

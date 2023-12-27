@@ -13,7 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    Object.assign(this, collidable);
+    Object.assign(this, collidable as any);
     this.init();
     this.initEvents();
   }
