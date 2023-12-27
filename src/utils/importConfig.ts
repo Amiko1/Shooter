@@ -7,7 +7,22 @@ export const playerConfig = {
     name: "walk_",
     imgNumber: 8,
     getImageNames() {
-      return Array.from({ length: 8 }, (_, index) => `${this.name}${index}`);
+      return Array.from(
+        { length: this.imgNumber },
+        (_, index) => `${this.name}${index}`
+      );
+    },
+  },
+
+  idle: {
+    expansion: "png",
+    name: "idle_",
+    imgNumber: 6,
+    getImageNames() {
+      return Array.from(
+        { length: this.imgNumber },
+        (_, index) => `${this.name}${index}`
+      );
     },
   },
 };
