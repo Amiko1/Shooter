@@ -16,7 +16,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.playerSpeed = 200;
-    this.setScale(0.11);
+    const scaleFactor = 0.1; // You can adjust this value based on your scaling needs
+
+    this.setScale(scaleFactor);
+    this.body?.setSize(this.width / 3, 50);
+    this.setOffset(this.width / 3, this.height - this.height / 10);
     if (this.scene.input.keyboard)
       this.cursors = this.scene.input.keyboard.createCursorKeys();
 
@@ -41,14 +45,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   update(time: number, delta: number) {
     super.preUpdate(time, delta);
-    const { left, right } = this.cursors;
+    const { left, right, down, up } = this.cursors;
 
     if (left.isDown) {
       this.setVelocityX(-this.playerSpeed);
+      this.setFlipX(true);
     } else if (right.isDown) {
       this.setVelocityX(this.playerSpeed);
+      this.setFlipX(false);
     } else {
       this.setVelocityX(0);
+    }
+
+    if (up.isDown) {
+      this.setVelocityY(-this.playerSpeed);
+    } else if (down.isDown) {
+      this.setVelocityY(this.playerSpeed);
+    } else {
+      this.setVelocityY(0);
     }
 
     this.play("walk", true);
