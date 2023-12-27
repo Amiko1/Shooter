@@ -9,13 +9,15 @@ export class PlayScene extends Scene {
 
   create() {
     const map = this.createMap();
-    const { wall, floor } = this.createLayer(map);
+    const { wallLayer, playerSpawnZoneLayer } = this.createLayer(map);
 
-    const player = this.createPlayer();
+    const playerSpawnZone = this.getPlayerSpawnZone(playerSpawnZoneLayer);
+
+    const player = this.createPlayer(playerSpawnZone);
 
     this.createPlayerColliders(player, {
       colliders: {
-        wall: wall,
+        wallLayer: wallLayer,
       },
     });
   }
@@ -27,16 +29,16 @@ export class PlayScene extends Scene {
 
   createLayer(map: Phaser.Tilemaps.Tilemap) {
     const tileSet = map.addTilesetImage("dungeon", "dungeon");
-    const wall = map.createLayer("wall", tileSet as any);
-    const floor = map.createLayer("floor", tileSet as any);
+    const wallLayer = map.createLayer("wall", tileSet);
+    const floorLayer = map.createLayer("floor", tileSet);
+    const playerSpawnZoneLayer = map.getObjectLayer("playerSpawnZone");
+    wallLayer.setCollisionByExclusion([-1], true);
 
-    wall.setCollisionByExclusion([-1], true);
-
-    return { wall, floor };
+    return { wallLayer, floorLayer, playerSpawnZoneLayer };
   }
 
-  createPlayer() {
-    const player = new Player(this, 100, 250);
+  createPlayer(spawnZone: Phaser.Types.Tilemaps.TiledObject) {
+    const player = new Player(this, spawnZone.x, spawnZone.y);
 
     return player;
   }
@@ -47,11 +49,15 @@ export class PlayScene extends Scene {
       colliders,
     }: {
       colliders: {
-        wall: CollidableType;
+        wallLayer: CollidableType;
       };
     }
   ) {
     // @ts-ignore
-    player.addCollider(colliders.wall);
+    player.addCollider(colliders.wallLayer);
+  }
+  getPlayerSpawnZone(PlayerSpawnZoneLayer: Phaser.Tilemaps.ObjectLayer) {
+    const spawnZoneObjects = PlayerSpawnZoneLayer.objects;
+    return spawnZoneObjects[0];
   }
 }
