@@ -12,8 +12,8 @@ export class PlayScene extends Scene {
 
     const player = this.createPlayer();
 
-    wall && this.physics.add.collider(player, wall);
-    console.log(wall, floor);
+    // @ts-ignore
+    wall && player.addCollider(wall);
   }
 
   createMap() {

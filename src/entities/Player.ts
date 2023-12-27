@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 import initAnimations from "./playerAnims";
+import collidable from "../mixins/collidable";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -11,6 +12,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    Object.assign(this, collidable);
     this.init();
     this.initEvents();
   }
