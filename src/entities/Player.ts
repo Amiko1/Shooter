@@ -1,56 +1,111 @@
 import Phaser from "phaser";
 
-import initAnimations from "./playerAnims";
+import { playerAnims } from "./playerAnims";
 import collidable from "../mixins/collidable";
 
-class Player extends Phaser.Physics.Arcade.Sprite {
-  cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  playerSpeed!: number;
+class LeftHand extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, "leftHand");
 
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+
+    this.init();
+  }
+
+  init() {
+    this.setFlipX(true);
+
+    this.setScale(0.12);
+  }
+}
+
+class RightHand extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, "rightHand");
+
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+
+    this.init();
+  }
+
+  init() {
+    this.setOrigin(0.5, 0.5);
+    this.setScale(0.12);
+  }
+}
+
+class Body extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+    this.init();
+  }
 
+  init() {
+    const scaleFactor = 0.1; // You can adjust this value based on your scaling needs
+    this.setScale(scaleFactor);
+
+    playerAnims(this.anims);
+  }
+}
+
+class Player extends Phaser.Physics.Arcade.Sprite {
+  playerBody: Body;
+  leftHand: LeftHand;
+  rightHand: RightHand;
+  playerSpeed!: number;
+
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, "");
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+    this.playerBody = new Body(scene, x, y);
+    this.rightHand = new RightHand(scene, x, y);
+    this.leftHand = new LeftHand(scene, x, y);
     Object.assign(this, collidable as any);
+
     this.init();
     this.initEvents();
   }
 
   init() {
-    this.playerSpeed = 200;
-    const scaleFactor = 0.1; // You can adjust this value based on your scaling needs
-
-    this.setScale(scaleFactor);
-    this.body?.setSize(this.width / 3, 50);
-    this.setOffset(this.width / 3, this.height - this.height / 10);
-    if (this.scene.input.keyboard)
-      this.cursors = this.scene.input.keyboard.createCursorKeys();
-
+    this.setDisplaySize(this.body.width, this.body.height);
+    this.body.setSize(this.width / 1.5, 5);
+    this.setOffset(this.body.offset.x, this.height * 1.4);
+    this.setAlpha(0);
     this.setCollideWorldBounds(true);
-    initAnimations(this.anims);
+    this.playerSpeed = 200;
   }
 
   initEvents() {
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  update(time: number, delta: number) {
-    super.preUpdate(time, delta);
+  update() {
     this.handlePlayerInput();
+    this.setPlayerPartPositions();
     this.handleAnimationSwitch();
   }
 
+  setPlayerPartPositions() {
+    this.playerBody.body.reset(this.x, this.y);
+    this.leftHand.body.reset(this.x - 15, this.y + 20);
+    this.rightHand.body.reset(this.x + 13, this.y + 20);
+  }
+
   handlePlayerInput() {
-    const { left, right, down, up } = this.cursors;
+    const { left, right, down, up } =
+      this.scene.input.keyboard.createCursorKeys();
 
     if (left.isDown) {
-      this.setVelocityX(-this.playerSpeed);
-      this.setFlipX(true);
+      this.onLeftDown();
     } else if (right.isDown) {
-      this.setVelocityX(this.playerSpeed);
-      this.setFlipX(false);
+      this.onRightDown();
     } else {
       this.setVelocityX(0);
     }
@@ -64,11 +119,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  onLeftDown() {
+    this.setVelocityX(-this.playerSpeed);
+    this.rightHand.setFlipX(true);
+    this.playerBody.setFlipX(true);
+  }
+
+  onRightDown() {
+    this.setVelocityX(this.playerSpeed);
+    this.rightHand.setFlipX(false);
+    this.playerBody.setFlipX(false);
+  }
+
   handleAnimationSwitch() {
-    (this.body as Phaser.Physics.Arcade.Body).velocity.x ||
-    (this.body as Phaser.Physics.Arcade.Body).velocity.y !== 0
-      ? this.play("walk", true)
-      : this.play("idle", true);
+    if (
+      (this.body as Phaser.Physics.Arcade.Body).velocity.x !== 0 ||
+      (this.body as Phaser.Physics.Arcade.Body).velocity.y !== 0
+    ) {
+      this.playerBody.play("walk", true);
+    } else {
+      this.playerBody.play("idle", true);
+    }
   }
 }
 

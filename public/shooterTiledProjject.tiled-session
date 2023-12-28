@@ -29,14 +29,14 @@
         },
         "game.json": {
             "scale": 0.75,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 810.6666666666666,
-                "y": 476
+                "x": 860,
+                "y": 466.6666666666666
             }
         },
         "game.json#dungeon": {
-            "scaleInDock": 1
+            "scaleInDock": 1.5
         },
         "game.json#world": {
             "scaleInDock": 1.5

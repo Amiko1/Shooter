@@ -1,14 +1,14 @@
 import { playerConfig } from "../utils/importConfig";
 
-const { walk, idle } = playerConfig;
+const { walk, idle, key: playerKey } = playerConfig;
 
-export default (anims: Phaser.Animations.AnimationState) => {
+export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
   anims.create({
     key: "walk",
     frames: walk.getImageNames().map((name) => {
-      return { key: name };
+      return { key: `${playerKey}-${name}` };
     }),
-    frameRate: 6,
+    frameRate: 12,
     repeat: 1,
   });
 
@@ -16,9 +16,9 @@ export default (anims: Phaser.Animations.AnimationState) => {
     key: "idle",
     frames: idle.getImageNames().map((name) => {
       console.log(name);
-      return { key: name };
+      return { key: `${playerKey}-${name}` };
     }),
-    frameRate: 6,
+    frameRate: 12,
     repeat: 1,
   });
 };
