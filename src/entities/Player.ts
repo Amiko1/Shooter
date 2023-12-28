@@ -20,7 +20,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    const scaleFactor = 0.12; // You can adjust this value based on your scaling needs
+    const scaleFactor = 0.12;
     this.setScale(scaleFactor);
     this.body.setSize(this.width / 2, 10);
     this.setOffset(this.body.offset.x, this.height);
@@ -66,9 +66,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       (this.body as Phaser.Physics.Arcade.Body).velocity.x !== 0 ||
       (this.body as Phaser.Physics.Arcade.Body).velocity.y !== 0
     ) {
-      this.play("walk", true);
+      // this.play("walk", true);
     } else {
-      this.play("idle", true);
+      // this.play("idle", true);
     }
   }
 }

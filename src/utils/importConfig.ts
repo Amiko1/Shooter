@@ -1,35 +1,41 @@
-export const PLAYER1_PATH =
-  "./characters/Full body animated characters/Char 1/no hands";
-
-export const LEFT_HAND_PATH =
-  "./characters/Animated body parts/Left hands/handL1";
-
-export const RIGHT_HAND_PATH =
-  "./characters/Animated body parts/Right hands/handR1";
+export const PLAYER_BARBEDBAT_PATH = "./character/barbedBat";
+export const PLAYER_RIFLE_PATH = "./character/rifle";
+export const PLAYER_UNEQUIPPED_PATH = "./character/unequipped";
+import { PlayerImportType } from "../../types";
 
 export const playerConfig = {
-  key: "player",
-  walk: {
-    expansion: "png",
-    name: "walk_",
-    imgNumber: 8,
-    getImageNames() {
-      return Array.from(
-        { length: this.imgNumber },
-        (_, index) => `${this.name}${index}`
-      );
-    },
-  },
+  directions: [
+    "east",
+    "north",
+    "northEast",
+    "northWest",
+    "south",
+    "southEast",
+    "southWest",
+    "west",
+  ],
+  get imports(): PlayerImportType[] {
+    return [
+      // {
+      //   key: "barbedBat",
+      //   path: PLAYER_BARBEDBAT_PATH,
+      //   directions: this.directions,
+      //   expansion: this.expansion,
+      // },
 
-  idle: {
-    expansion: "png",
-    name: "idle_",
-    imgNumber: 6,
-    getImageNames() {
-      return Array.from(
-        { length: this.imgNumber },
-        (_, index) => `${this.name}${index}`
-      );
-    },
+      {
+        key: "rifle",
+        path: PLAYER_RIFLE_PATH,
+        directions: this.directions,
+        expansion: this.expansion,
+      },
+      // {
+      //   key: "unequipeed",
+      //   path: PLAYER_UNEQUIPPED_PATH,
+      //   directions: this.directions,
+      //   expansion: this.expansion,
+      // },
+    ];
   },
+  expansion: ".png",
 };
