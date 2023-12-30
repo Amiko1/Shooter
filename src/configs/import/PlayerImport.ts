@@ -16,14 +16,14 @@ const HEIGHT = 3233;
 const EXPANSION = ".png";
 
 const playerTypes = [
+  // {
+  //   playerType: "barbedBat",
+  //   path: PLAYER_BARBEDBAT_PATH,
+  //   frameWidth: WIDTH / 20,
+  //   frameHeight: HEIGHT / 11,
+  // },
   {
-    playerType: "barbedBat",
-    path: PLAYER_BARBEDBAT_PATH,
-    frameWidth: WIDTH / 20,
-    frameHeight: HEIGHT / 11,
-  },
-  {
-    playerTyp: "rifle",
+    playerType: "rifle",
     frameWidth: WIDTH / 20,
     frameHeight: HEIGHT / 11,
     path: PLAYER_RIFLE_PATH,
