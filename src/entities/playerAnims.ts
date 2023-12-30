@@ -1,5 +1,4 @@
-import playerImports from "../configs/import/PlayerImport";
-// import { PlayerImportType } from "./../../types";
+import playerAnimRegisters from "../configs/anims/PlayerAnimsRegister";
 
 export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
   // anims.create({
@@ -11,3 +10,5 @@ export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
   //   repeat: 1,
   // });
 };
+
+console.log(playerAnimRegisters);

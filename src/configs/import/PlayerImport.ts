@@ -16,7 +16,7 @@ const WIDTH = 4840;
 const HEIGHT = 3233;
 const EXPANSION = ".png";
 
-const playerImports: PlayerImportType[] = [
+const playerTypes = [
   // {
   //   key: "barbedBat",
   //   path: PLAYER_BARBEDBAT_PATH,
@@ -28,9 +28,22 @@ const playerImports: PlayerImportType[] = [
     frameWidth: WIDTH / 20,
     frameHeight: HEIGHT / 11,
     path: PLAYER_RIFLE_PATH,
-    directions: DIRECTIONS,
-    expansion: EXPANSION,
   },
 ];
+
+const playerImports = playerTypes.flatMap(
+  ({ key, frameHeight, frameWidth, path }) => {
+    return DIRECTIONS.map((direction) => {
+      return {
+        key,
+        frameHeight,
+        frameWidth,
+        path,
+        direction,
+        expansion: EXPANSION,
+      };
+    });
+  }
+);
 
 export default playerImports;

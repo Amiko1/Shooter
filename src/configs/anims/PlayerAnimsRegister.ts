@@ -1,4 +1,3 @@
-import { PlayerImportType } from "../../../types";
 import playerImports from "../import/PlayerImport";
 import generateAnimationList from "../../utils/generateAnimationList";
 
@@ -8,24 +7,18 @@ const anims = [
   { label: "run", start: 41, end: 52, includs: ["rifle", "barbedBat"] },
 ];
 
-export const getPlayerAnimconfig = () => {
-  return playerImports.flatMap((playerImport: PlayerImportType) => {
-    return playerImport.directions.flatMap((direction: string) => {
-      return anims
-        .filter((anim) => anim.includs.includes(playerImport.key))
-        .map((anim) =>
-          generateAnimationList(
-            playerImport.key,
-            anim.label,
-            anim.start,
-            anim.end,
-            direction
-          )
-        );
-    });
-  });
-};
-
-const playerAnimRegisters = getPlayerAnimconfig();
+const playerAnimRegisters = playerImports.flatMap((playerImport) => {
+  return anims
+    .filter((anim) => anim.includs.includes(playerImport.key))
+    .map((anim) =>
+      generateAnimationList(
+        playerImport.key,
+        anim.label,
+        anim.start,
+        anim.end,
+        playerImport.direction
+      )
+    );
+});
 
 export default playerAnimRegisters;
