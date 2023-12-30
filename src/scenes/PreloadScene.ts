@@ -11,9 +11,9 @@ export class PreloadScene extends Scene {
     this.load.image("dungeon", "./dungeon.png");
 
     playerImports.forEach(
-      ({ direction, frameWidth, frameHeight, key, path, expansion }) => {
+      ({ direction, frameWidth, frameHeight, playerType, path, expansion }) => {
         this.load.spritesheet(
-          `${key}-${direction}`,
+          `${playerType}-${direction}`,
           `${path}/${direction}${expansion}`,
           { frameWidth: frameWidth, frameHeight: frameHeight }
         );

@@ -1,4 +1,4 @@
-import { PLAYER_RIFLE_PATH } from "../assetPaths";
+import { PLAYER_RIFLE_PATH, PLAYER_BARBEDBAT_PATH } from "../assetPaths";
 
 const DIRECTIONS = [
   "east",
@@ -16,14 +16,14 @@ const HEIGHT = 3233;
 const EXPANSION = ".png";
 
 const playerTypes = [
-  // {
-  //   key: "barbedBat",
-  //   path: PLAYER_BARBEDBAT_PATH,
-  //   directions: this.directions,
-  //   expansion: this.expansion,
-  // },
   {
-    key: "rifle",
+    playerType: "barbedBat",
+    path: PLAYER_BARBEDBAT_PATH,
+    frameWidth: WIDTH / 20,
+    frameHeight: HEIGHT / 11,
+  },
+  {
+    playerTyp: "rifle",
     frameWidth: WIDTH / 20,
     frameHeight: HEIGHT / 11,
     path: PLAYER_RIFLE_PATH,
@@ -31,10 +31,10 @@ const playerTypes = [
 ];
 
 const playerImports = playerTypes.flatMap(
-  ({ key, frameHeight, frameWidth, path }) => {
+  ({ playerType, frameHeight, frameWidth, path }) => {
     return DIRECTIONS.map((direction) => {
       return {
-        key,
+        playerType,
         frameHeight,
         frameWidth,
         path,
