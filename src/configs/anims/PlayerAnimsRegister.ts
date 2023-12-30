@@ -1,24 +1,42 @@
 import playerImports from "../import/PlayerImport";
-import generateAnimationList from "../../utils/generateAnimationList";
 
 const anims = [
-  { label: "idle", start: 0, end: 14, includs: ["rifle", "barbedBat"] },
-  { label: "walk", start: 21, end: 22, includs: ["rifle", "barbedBat"] },
-  { label: "run", start: 41, end: 52, includs: ["rifle", "barbedBat"] },
+  {
+    animLabel: "idle",
+    frameStart: 0,
+    frameEnd: 14,
+    includs: ["rifle", "barbedBat"],
+    frameRate: 12,
+  },
+  {
+    animLabel: "walk",
+    frameStart: 21,
+    frameEnd: 22,
+    includs: ["rifle", "barbedBat"],
+    frameRate: 12,
+  },
+  {
+    animLabel: "run",
+    frameStart: 41,
+    frameEnd: 52,
+    includs: ["rifle", "barbedBat"],
+    frameRate: 12,
+  },
 ];
 
-const playerAnimRegisters = playerImports.flatMap((playerImport) => {
+const playerAnimRegisters = playerImports.flatMap(({ key, direction }) => {
   return anims
-    .filter((anim) => anim.includs.includes(playerImport.key))
-    .map((anim) =>
-      generateAnimationList(
-        playerImport.key,
-        anim.label,
-        anim.start,
-        anim.end,
-        playerImport.direction
-      )
-    );
+    .filter((anim) => anim.includs.includes(key))
+    .map(({ frameStart, frameEnd, frameRate, animLabel }) => {
+      return {
+        frameStart: frameStart,
+        frameEnd: frameEnd,
+        frameRate: frameRate,
+        direction: direction,
+        key: `player-${key}-${direction}-${animLabel}`,
+        frameKey: `${key}-${direction}`,
+      };
+    });
 });
 
 export default playerAnimRegisters;

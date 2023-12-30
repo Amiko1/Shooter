@@ -1,4 +1,3 @@
-import { PlayerImportType } from "../../../types";
 import { PLAYER_RIFLE_PATH } from "../assetPaths";
 
 const DIRECTIONS = [

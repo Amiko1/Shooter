@@ -9,6 +9,17 @@ export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
   //   frameRate: 12,
   //   repeat: 1,
   // });
+  playerAnimRegisters.forEach(({ key, frameKey, frameStart, frameEnd }) => {
+    anims.create({
+      key: key,
+      frames: anims.generateFrameNames(`${frameKey}`, {
+        start: frameStart,
+        end: frameEnd,
+      }),
+      frameRate: 12,
+      repeat: 1,
+    });
+  });
 };
 
 console.log(playerAnimRegisters);
