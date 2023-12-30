@@ -8,4 +8,6 @@ export interface PlayerImportType {
   path: string;
   directions: string[];
   expansion: string;
+  frameWidth: number;
+  frameHeight: number;
 }

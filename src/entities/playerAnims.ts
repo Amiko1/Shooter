@@ -1,7 +1,5 @@
-import { playerConfig } from "../utils/importConfig";
-
-const { imports: playerImports } = playerConfig;
-import { PlayerImportType } from "./../../types";
+import playerImports from "../configs/import/PlayerImport";
+// import { PlayerImportType } from "./../../types";
 
 export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
   // anims.create({

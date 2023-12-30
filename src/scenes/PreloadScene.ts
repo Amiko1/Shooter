@@ -1,7 +1,6 @@
 import { Scene } from "phaser";
-import { playerConfig } from "../utils/importConfig";
+import playerImports from "../configs/import/PlayerImport";
 
-const { imports: playerImports } = playerConfig;
 import { PlayerImportType } from "./../../types";
 
 export class PreloadScene extends Scene {
@@ -14,7 +13,7 @@ export class PreloadScene extends Scene {
     this.load.image("dungeon", "./dungeon.png");
 
     playerImports.forEach((playerImport: PlayerImportType) => {
-      playerImport.directions.forEach((direction: string) => {
+      playerImport.directions.forEach((direction) => {
         this.load.image(
           `${playerImport.key}-${direction}`,
           `${playerImport.path}/${direction}${playerImport.expansion}`
