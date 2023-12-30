@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 import collidable from "../mixins/collidable";
-import { playerAnims } from "./playerAnims";
+import { playerAnims, PlayerAnimKeys } from "./playerAnims";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   playerBody: Body;
@@ -20,13 +20,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    const scaleFactor = 0.12;
+    const scaleFactor = 0.42;
     this.setScale(scaleFactor);
     this.body.setSize(this.width / 2, 10);
     this.setOffset(this.body.offset.x, this.height);
     this.setCollideWorldBounds(true);
     this.playerSpeed = 200;
     playerAnims(this.anims);
+    this.play(PlayerAnimKeys.RIFLE_NORTHWEST_WALK, true);
   }
 
   initEvents() {

@@ -4,21 +4,21 @@ const anims = [
   {
     animLabel: "idle",
     frameStart: 0,
-    frameEnd: 14,
+    frameEnd: 13,
     playerTypes: ["rifle", "barbedBat"],
     frameRate: 12,
   },
   {
     animLabel: "walk",
-    frameStart: 21,
-    frameEnd: 22,
+    frameStart: 20,
+    frameEnd: 30,
     playerTypes: ["rifle", "barbedBat"],
     frameRate: 12,
   },
   {
     animLabel: "run",
-    frameStart: 41,
-    frameEnd: 52,
+    frameStart: 40,
+    frameEnd: 50,
     playerTypes: ["rifle", "barbedBat"],
     frameRate: 12,
   },
@@ -34,7 +34,7 @@ const playerAnimRegisters = playerImports.flatMap(
           frameEnd: frameEnd,
           frameRate: frameRate,
           direction: direction,
-          key: `player-${playerType}-${direction}-${animLabel}`,
+          key: `${playerType}-${direction}-${animLabel}`,
           frameKey: `${playerType}-${direction}`,
         };
       });
