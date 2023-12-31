@@ -46,7 +46,8 @@ export default class StateMachine {
     }
 
     if (this.isCurrentState(name)) {
-      return;
+      console.log("TRY");
+      //   return;
     }
 
     if (this.isChangingState) {

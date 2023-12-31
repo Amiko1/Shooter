@@ -7,7 +7,7 @@ import { States } from "./PlayerStates";
 class Player extends Phaser.Physics.Arcade.Sprite {
   private stateMachine: StateMachine;
   playerSpeed!: number;
-  states: States;
+  playerState: States;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "player");
@@ -30,7 +30,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true);
     this.playerSpeed = 200;
     playerAnims(this.anims);
-    this.play(PlayerAnimKeys.RIFLE_NORTHWEST_WALK, true);
+    this.play(PlayerAnimKeys.RIFLE_EAST_WALK, true);
   }
 
   initStateMachine() {
@@ -68,7 +68,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       .addState(States.moveDownRight, {
         onEnter: this.moveDownRight,
         onExit: this.clearMove,
-      });
+      })
+      .addState(States.CLEAR, {});
   }
 
   onMoveDown() {
@@ -150,38 +151,37 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene.input.keyboard.createCursorKeys();
     // @ts-ignore
     const { W, A, S, D } = this.scene.input.keyboard.addKeys("W,A,S,D");
-
     // Handle horizontal movement
     switch (true) {
       case (left.isDown && up.isDown) || (A.isDown && W.isDown):
-        this.states = States.moveUpLeft;
+        this.playerState = States.moveUpLeft;
         break;
       case (right.isDown && up.isDown) || (D.isDown && W.isDown):
-        this.states = States.moveUpRight;
+        this.playerState = States.moveUpRight;
         break;
       case (left.isDown && down.isDown) || (A.isDown && S.isDown):
-        this.states = States.moveDownLeft;
+        this.playerState = States.moveDownLeft;
         break;
       case (right.isDown && down.isDown) || (D.isDown && S.isDown):
-        this.states = States.moveDownRight;
+        this.playerState = States.moveDownRight;
         break;
       case left.isDown || A.isDown:
-        this.states = States.moveLeft;
+        this.playerState = States.moveLeft;
         break;
       case right.isDown || D.isDown:
-        this.states = States.moveRight;
+        this.playerState = States.moveRight;
         break;
       case up.isDown || W.isDown:
-        this.states = States.moveUp;
+        this.playerState = States.moveUp;
         break;
       case down.isDown || S.isDown:
-        this.states = States.moveDown;
+        this.playerState = States.moveDown;
         break;
       default:
-        this.states = null;
         this.clearMove();
+        this.playerState = null;
     }
-    this.stateMachine.setState(this.states);
+    this.playerState && this.stateMachine.setState(this.playerState);
   }
 
   handleAnimationSwitch() {

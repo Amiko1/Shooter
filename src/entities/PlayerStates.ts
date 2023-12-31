@@ -8,4 +8,5 @@ export enum States {
   moveUpRight = "moveTopRight",
   moveDownLeft = "moveDownLeft",
   moveDownRight = "moveDownRight",
+  CLEAR = "clear",
 }
