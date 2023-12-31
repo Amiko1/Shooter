@@ -13,6 +13,7 @@ export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
     });
   });
 };
+console.log(playerAnimRegisters);
 
 export enum PlayerAnimKeys {
   RIFLE_NORTH_IDLE = "rifle-north-idle",

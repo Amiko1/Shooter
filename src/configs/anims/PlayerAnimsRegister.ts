@@ -23,7 +23,6 @@ const anims = [
     frameRate: 12,
   },
 ];
-
 const playerAnimRegisters = playerImports.flatMap(
   ({ playerType, direction }) => {
     return anims
