@@ -1,6 +1,8 @@
 import { CollidableType } from "./../../types";
 import { Scene } from "phaser";
 import Player from "../entities/Player";
+import Enemies from "../groups/Enemis";
+import { ENEMY_TYPES } from "../beingTypes";
 
 export class PlayScene extends Scene {
   constructor() {
@@ -18,6 +20,14 @@ export class PlayScene extends Scene {
     this.createPlayerColliders(player, {
       colliders: {
         wallLayer: wallLayer,
+      },
+    });
+
+    const enemies = this.createEnemies();
+
+    this.createEnemyColliders(enemies, {
+      colliders: {
+        platformsColliders: wallLayer,
       },
     });
   }
@@ -41,6 +51,21 @@ export class PlayScene extends Scene {
     const player = new Player(this, spawnZone.x, spawnZone.y);
 
     return player;
+  }
+
+  createEnemies() {
+    const enemies = new Enemies(this);
+    const enemyTypes = ENEMY_TYPES;
+
+    const enemy = new enemyTypes.Goblin(this, 200, 200);
+
+    enemies.add(enemy);
+
+    return enemies;
+  }
+
+  createEnemyColliders(enemies, { colliders }) {
+    enemies.addCollider(colliders.platformsColliders);
   }
 
   createPlayerColliders(

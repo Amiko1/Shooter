@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import playerImports from "../configs/import/PlayerImport";
+import { GOBLING_PATH } from "../configs/assetPaths";
 
 export class PreloadScene extends Scene {
   constructor() {
@@ -20,6 +21,11 @@ export class PreloadScene extends Scene {
         );
       }
     );
+
+    this.load.spritesheet("goblin", GOBLING_PATH, {
+      frameWidth: 704 / 11,
+      frameHeight: 320 / 5,
+    });
   }
 
   create() {

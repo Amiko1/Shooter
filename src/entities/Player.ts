@@ -26,6 +26,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     playerAnims(this.anims);
     this.play(PlayerAnimKeys.RIFLE_SOUTH_SHOOT);
     this.setScale(0.42);
+    this.setOrigin(1, 0.5);
+    this.setSize(150, this.height);
     this.setCollideWorldBounds(true);
     this.playerSpeed = 200;
   }
@@ -72,10 +74,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   playAnimationByDirection(direction: string) {
     const animationKey = this.getAnimationKey(direction);
-    this.play(
-      animationKey,
-      this.body.velocity.x || this.body.velocity.y ? true : false
-    );
+    this.play(animationKey, true);
   }
 
   getAnimationKey(direction: string): string {
