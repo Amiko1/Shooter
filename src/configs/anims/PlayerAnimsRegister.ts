@@ -22,6 +22,20 @@ const anims = [
     playerTypes: ["rifle", "barbedBat"],
     frameRate: 12,
   },
+  {
+    animLabel: "shoot",
+    frameStart: 80,
+    frameEnd: 90,
+    playerTypes: ["rifle", "barbedBat"],
+    frameRate: 12,
+  },
+  {
+    animLabel: "standShoot",
+    frameStart: 60,
+    frameEnd: 66,
+    playerTypes: ["rifle", "barbedBat"],
+    frameRate: 12,
+  },
 ];
 const playerAnimRegisters = playerImports.flatMap(
   ({ playerType, direction }) => {

@@ -1,16 +1,16 @@
 import Phaser from "phaser";
-
 import collidable from "../mixins/collidable";
-import StateMachine from "../StateMachine";
 import { playerAnims, PlayerAnimKeys } from "./playerAnims";
 import { States } from "./PlayerStates";
+
 class Player extends Phaser.Physics.Arcade.Sprite {
-  private stateMachine: StateMachine;
   playerSpeed!: number;
   playerState: States;
+  cursors: any;
+  keys: any;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, "player");
+    super(scene, x, y, "rifle-south");
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -21,104 +21,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    this.initStateMachine();
-    // const scaleFactor = 0.42;
-    // this.setScale(scaleFactor);
-    this.setDisplaySize(20, 20);
-    // this.body.setSize(this.width / 2, 10);
-    // this.setOffset(this.body.offset.x, this.height);
+    this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.keys = this.scene.input.keyboard.addKeys("W,A,S,D");
+    playerAnims(this.anims);
+    this.play(PlayerAnimKeys.RIFLE_SOUTH_SHOOT);
+    this.setScale(0.42);
     this.setCollideWorldBounds(true);
     this.playerSpeed = 200;
-    playerAnims(this.anims);
-    this.play(PlayerAnimKeys.RIFLE_EAST_WALK, true);
-  }
-
-  initStateMachine() {
-    this.stateMachine = new StateMachine(this, "player");
-    this.stateMachine
-      .addState(States.IDLE)
-      .addState(States.moveDown, {
-        onEnter: this.onMoveDown,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveUp, {
-        onEnter: this.onMoveUp,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveLeft, {
-        onEnter: this.onMoveLeft,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveRight, {
-        onEnter: this.onMoveRight,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveUpLeft, {
-        onEnter: this.moveUpLeft,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveUpRight, {
-        onEnter: this.moveUpRight,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveDownLeft, {
-        onEnter: this.moveDownLeft,
-        onExit: this.clearMove,
-      })
-      .addState(States.moveDownRight, {
-        onEnter: this.moveDownRight,
-        onExit: this.clearMove,
-      })
-      .addState(States.CLEAR, {});
-  }
-
-  onMoveDown() {
-    this.setVelocityY(this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_SOUTH_WALK, true);
-  }
-
-  onMoveUp() {
-    this.setVelocityY(-this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_NORTH_WALK, true);
-  }
-
-  onMoveLeft() {
-    this.setVelocityX(-this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_WEST_WALK, true);
-  }
-
-  onMoveRight() {
-    this.setVelocityX(this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_EAST_WALK, true);
-  }
-
-  moveUpLeft() {
-    this.setVelocityY(-this.playerSpeed);
-    this.setVelocityX(-this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_NORTHWEST_WALK, true);
-  }
-
-  moveUpRight() {
-    this.setVelocityY(-this.playerSpeed);
-    this.setVelocityX(this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_NORTHEAST_WALK, true);
-  }
-
-  moveDownLeft() {
-    this.setVelocityY(this.playerSpeed);
-    this.setVelocityX(-this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_SOUTHWEST_WALK, true);
-  }
-
-  moveDownRight() {
-    this.setVelocityY(this.playerSpeed);
-    this.setVelocityX(this.playerSpeed);
-    this.anims.play(PlayerAnimKeys.RIFLE_SOUTHEAST_WALK, true);
-  }
-
-  clearMove() {
-    this.setVelocityY(0);
-    this.setVelocityX(0);
   }
 
   initEvents() {
@@ -127,72 +36,65 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     this.handlePlayerInput();
-    this.handleAnimationSwitch();
-    // this.handleAiming();
+    this.handleAiming();
   }
 
-  // handleAiming() {
-  //   const pointer = this.scene.input.activePointer;
+  handleAiming() {
+    const pointer = this.scene.input.activePointer;
+    const angle = this.calculateAngle(pointer.worldX, pointer.worldY);
+    const direction = this.mapAngleToDirection(angle);
 
-  //   // Calculate angle between player and pointer
-  //   const angle = Phaser.Math.Angle.Between(
-  //     this.x,
-  //     this.y,
-  //     pointer.worldX,
-  //     pointer.worldY
-  //   );
+    this.playAnimationByDirection(direction);
+  }
 
-  //   // Set player rotation
-  //   this.setRotation(angle);
-  // }
+  calculateAngle(targetX: number, targetY: number): number {
+    return Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
+  }
+
+  mapAngleToDirection(angle: number): string {
+    let angleDeg = Phaser.Math.RadToDeg(angle);
+    angleDeg = angleDeg < 0 ? angleDeg + 360 : angleDeg;
+
+    const angleSectors = Math.round(angleDeg / 45) % 8;
+    const directions = [
+      "east",
+      "southEast",
+      "south",
+      "southWest",
+      "west",
+      "northWest",
+      "north",
+      "northEast",
+    ];
+
+    return directions[angleSectors];
+  }
+
+  playAnimationByDirection(direction: string) {
+    const animationKey = this.getAnimationKey(direction);
+    this.play(
+      animationKey,
+      this.body.velocity.x || this.body.velocity.y ? true : false
+    );
+  }
+
+  getAnimationKey(direction: string): string {
+    return this.body.velocity.x || this.body.velocity.y
+      ? `rifle-${direction}-shoot`
+      : `rifle-${direction}-standShoot`;
+  }
 
   handlePlayerInput() {
-    const { left, right, down, up } =
-      this.scene.input.keyboard.createCursorKeys();
-    // @ts-ignore
-    const { W, A, S, D } = this.scene.input.keyboard.addKeys("W,A,S,D");
-    // Handle horizontal movement
-    switch (true) {
-      case (left.isDown && up.isDown) || (A.isDown && W.isDown):
-        this.playerState = States.moveUpLeft;
-        break;
-      case (right.isDown && up.isDown) || (D.isDown && W.isDown):
-        this.playerState = States.moveUpRight;
-        break;
-      case (left.isDown && down.isDown) || (A.isDown && S.isDown):
-        this.playerState = States.moveDownLeft;
-        break;
-      case (right.isDown && down.isDown) || (D.isDown && S.isDown):
-        this.playerState = States.moveDownRight;
-        break;
-      case left.isDown || A.isDown:
-        this.playerState = States.moveLeft;
-        break;
-      case right.isDown || D.isDown:
-        this.playerState = States.moveRight;
-        break;
-      case up.isDown || W.isDown:
-        this.playerState = States.moveUp;
-        break;
-      case down.isDown || S.isDown:
-        this.playerState = States.moveDown;
-        break;
-      default:
-        this.clearMove();
-        this.playerState = null;
-    }
-    this.playerState && this.stateMachine.setState(this.playerState);
-  }
+    const { W, A, S, D } = this.keys;
 
-  handleAnimationSwitch() {
-    if (
-      (this.body as Phaser.Physics.Arcade.Body).velocity.x !== 0 ||
-      (this.body as Phaser.Physics.Arcade.Body).velocity.y !== 0
-    ) {
-      // this.play("walk", true);
-    } else {
-      // this.play("idle", true);
-    }
+    const velocity = { x: 0, y: 0 };
+
+    if (A.isDown) velocity.x = -this.playerSpeed;
+    if (D.isDown) velocity.x = this.playerSpeed;
+    if (W.isDown) velocity.y = -this.playerSpeed;
+    if (S.isDown) velocity.y = this.playerSpeed;
+
+    this.setVelocity(velocity.x, velocity.y);
   }
 }
 

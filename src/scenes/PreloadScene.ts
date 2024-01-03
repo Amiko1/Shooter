@@ -12,6 +12,7 @@ export class PreloadScene extends Scene {
 
     playerImports.forEach(
       ({ direction, frameWidth, frameHeight, playerType, path, expansion }) => {
+        console.log(`${playerType}-${direction}`);
         this.load.spritesheet(
           `${playerType}-${direction}`,
           `${path}/${direction}${expansion}`,
