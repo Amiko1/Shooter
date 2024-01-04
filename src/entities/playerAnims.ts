@@ -1,19 +1,20 @@
 import playerAnimRegisters from "../configs/anims/PlayerAnimsRegister";
 
 export const playerAnims = (anims: Phaser.Animations.AnimationState) => {
-  playerAnimRegisters.forEach(({ key, frameKey, frameStart, frameEnd }) => {
-    anims.create({
-      key: key,
-      frames: anims.generateFrameNames(`${frameKey}`, {
-        start: frameStart,
-        end: frameEnd,
-      }),
-      frameRate: 18,
-      repeat: -1,
-    });
-  });
+  playerAnimRegisters.forEach(
+    ({ key, frameKey, frameStart, frameEnd, frameRate }) => {
+      anims.create({
+        key: key,
+        frames: anims.generateFrameNames(`${frameKey}`, {
+          start: frameStart,
+          end: frameEnd,
+        }),
+        frameRate: frameRate,
+        repeat: -1,
+      });
+    }
+  );
 };
-console.log(playerAnimRegisters);
 
 export enum PlayerAnimKeys {
   RIFLE_NORTH_STANDSHOOT = "rifle-north-standShoot",

@@ -25,6 +25,7 @@ export class PreloadScene extends Scene {
     this.load.spritesheet("goblin", GOBLING_PATH, {
       frameWidth: 704 / 11,
       frameHeight: 320 / 5,
+      spacing: 1,
     });
   }
 

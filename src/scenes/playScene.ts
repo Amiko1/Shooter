@@ -3,8 +3,11 @@ import { Scene } from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemis";
 import { ENEMY_TYPES } from "../beingTypes";
+import Goblin from "../entities/Goblin";
 
 export class PlayScene extends Scene {
+  enemies: Enemies;
+  player: Player;
   constructor() {
     super("PlayScene");
   }
@@ -15,19 +18,19 @@ export class PlayScene extends Scene {
 
     const playerSpawnZone = this.getPlayerSpawnZone(playerSpawnZoneLayer);
 
-    const player = this.createPlayer(playerSpawnZone);
+    this.player = this.createPlayer(playerSpawnZone);
 
-    this.createPlayerColliders(player, {
+    this.createPlayerColliders(this.player, {
       colliders: {
         wallLayer: wallLayer,
       },
     });
+    this.enemies = this.createEnemies();
 
-    const enemies = this.createEnemies();
-
-    this.createEnemyColliders(enemies, {
+    this.createEnemyColliders(this.enemies, {
       colliders: {
         platformsColliders: wallLayer,
+        player: this.player,
       },
     });
   }
@@ -57,15 +60,36 @@ export class PlayScene extends Scene {
     const enemies = new Enemies(this);
     const enemyTypes = ENEMY_TYPES;
 
-    const enemy = new enemyTypes.Goblin(this, 200, 200);
-
-    enemies.add(enemy);
+    for (let i = 0; i < 10; i++) {
+      const randomX = Math.floor(
+        Math.random() * (this.game.config.width as number)
+      );
+      const randomY = Math.floor(Math.random() * -200);
+      const enemy = new enemyTypes.Goblin(this, randomX, randomY);
+      enemy.setImmovable(true);
+      enemies.add(enemy);
+    }
 
     return enemies;
   }
 
-  createEnemyColliders(enemies, { colliders }) {
+  update() {
+    this.enemies.getChildren().forEach((enemy: Goblin) => {
+      enemy.moveTo(this.player);
+    });
+  }
+
+  createEnemyColliders(enemies: Enemies, { colliders }) {
+    // @ts-ignore
     enemies.addCollider(colliders.platformsColliders);
+    // @ts-ignore
+    enemies.addCollider(colliders.player, () => {
+      // console.log("HIT");
+    });
+
+    this.physics.add.collider(enemies, enemies, () => {
+      console.log("COLLIDER");
+    });
   }
 
   createPlayerColliders(

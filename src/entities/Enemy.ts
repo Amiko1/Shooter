@@ -18,10 +18,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   init() {
     this.speed = 200;
-
-    this.setCollideWorldBounds(true);
     this.setImmovable(true);
     this.setOrigin(0.5, 1);
+  }
+
+  moveTo(player: Phaser.Physics.Arcade.Sprite) {
+    this.scene.physics.moveToObject(this, player);
   }
 }
 
